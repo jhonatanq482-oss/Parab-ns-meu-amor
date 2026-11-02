@@ -1,0 +1,557 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(
+            circle at 50% 10%,
+            #5d1730 0%,
+            #250914 45%,
+            #090306 100%
+        );
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    overflow: hidden;
+
+    color: #35151e;
+}
+
+
+/* =========================
+   ÁLBUM
+========================= */
+
+.album {
+    width: min(92vw, 430px);
+    height: min(86vh, 760px);
+
+    position: relative;
+
+    perspective: 1800px;
+}
+
+
+/* =========================
+   CAPA
+========================= */
+
+.capa {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 20;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 35px 25px;
+
+    color: #fff;
+
+    border-radius: 14px;
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(255,255,255,.12),
+            transparent 35%
+        ),
+        linear-gradient(
+            145deg,
+            #4b071b,
+            #8e1736 45%,
+            #4a0719
+        );
+
+    box-shadow:
+        0 30px 70px rgba(0,0,0,.75),
+        inset 0 0 0 2px #e8c46a,
+        inset 0 0 0 7px rgba(90,20,30,.8);
+
+    transform-origin: left center;
+
+    transition:
+        transform 1.5s
+        cubic-bezier(.65,.05,.36,1);
+
+    overflow: hidden;
+}
+
+
+/* brilho decorativo */
+
+.capa::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 18px;
+
+    border: 1px solid rgba(244,212,124,.65);
+
+    border-radius: 9px;
+
+    pointer-events: none;
+}
+
+
+.capa::after {
+    content: "✦     ✦     ✦";
+
+    position: absolute;
+
+    top: 30px;
+
+    left: 0;
+
+    width: 100%;
+
+    text-align: center;
+
+    color: #f4d47c;
+
+    font-size: 17px;
+
+    letter-spacing: 10px;
+
+    opacity: .8;
+}
+
+
+/* quando abrir */
+
+.capa.aberta {
+    transform: rotateY(-155deg);
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   CORAÇÃO
+========================= */
+
+.coracao {
+    position: relative;
+
+    z-index: 2;
+
+    font-size: 72px;
+
+    margin-bottom: 18px;
+
+    filter:
+        drop-shadow(
+            0 8px 15px
+            rgba(0,0,0,.4)
+        );
+
+    animation:
+        pulsar 1.6s ease-in-out infinite;
+}
+
+
+@keyframes pulsar {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.13);
+    }
+}
+
+
+/* =========================
+   TÍTULO
+========================= */
+
+.capa h1 {
+    position: relative;
+
+    z-index: 2;
+
+    color: #fff4d0;
+
+    font-size: clamp(30px, 8vw, 38px);
+
+    line-height: 1.15;
+
+    margin-bottom: 12px;
+
+    text-shadow:
+        0 3px 8px rgba(0,0,0,.5);
+}
+
+
+.capa p {
+    position: relative;
+
+    z-index: 2;
+
+    color: #f9df9a;
+
+    font-size: 18px;
+
+    font-style: italic;
+
+    margin-bottom: 45px;
+}
+
+
+/* =========================
+   BOTÃO
+========================= */
+
+#botaoSegurar {
+    position: relative;
+
+    z-index: 2;
+
+    border: 1px solid #f5d77d;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.14),
+            rgba(0,0,0,.18)
+        );
+
+    color: #fff7df;
+
+    padding: 16px 28px;
+
+    border-radius: 50px;
+
+    font-family: Georgia, serif;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.2);
+
+    touch-action: none;
+}
+
+
+#botaoSegurar:active {
+    transform: scale(.95);
+}
+
+
+/* =========================
+   BARRA DE PROGRESSO
+========================= */
+
+.barra {
+    position: relative;
+
+    z-index: 2;
+
+    width: 220px;
+
+    height: 5px;
+
+    margin-top: 18px;
+
+    background:
+        rgba(255,255,255,.18);
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+
+#progresso {
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d5a94b,
+            #fff0a8,
+            #d5a94b
+        );
+}
+
+
+.capa small {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 11px;
+
+    color: rgba(255,244,208,.75);
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   PÁGINAS
+========================= */
+
+.pagina {
+    position: absolute;
+
+    inset: 0;
+
+    display: none;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 45px 30px 80px;
+
+    border-radius: 12px;
+
+    background:
+        radial-gradient(
+            circle at 20% 10%,
+            rgba(255,255,255,.8),
+            transparent 30%
+        ),
+        linear-gradient(
+            145deg,
+            #fffdf5,
+            #f3e2bd
+        );
+
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.45),
+        inset 0 0 0 2px #c8a15b;
+
+    overflow: hidden;
+}
+
+
+.pagina::before {
+    content: "✦";
+
+    position: absolute;
+
+    top: 22px;
+    left: 25px;
+
+    color: #b38738;
+
+    font-size: 18px;
+}
+
+
+.pagina::after {
+    content: "✦";
+
+    position: absolute;
+
+    bottom: 22px;
+    right: 25px;
+
+    color: #b38738;
+
+    font-size: 18px;
+}
+
+
+.pagina.ativa {
+    display: flex;
+}
+
+
+.pagina h2 {
+    color: #76152c;
+
+    font-size: 28px;
+
+    line-height: 1.2;
+
+    margin-bottom: 25px;
+}
+
+
+.pagina p {
+    color: #4a3035;
+
+    font-size: 18px;
+
+    line-height: 1.75;
+}
+
+
+.pagina h3 {
+    color: #76152c;
+
+    font-size: 25px;
+
+    margin-top: 30px;
+}
+
+
+/* =========================
+   CONTROLES
+========================= */
+
+.controles {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 15px;
+
+    transform: translateX(-50%);
+
+    display: none;
+
+    align-items: center;
+
+    gap: 22px;
+
+    z-index: 30;
+}
+
+
+.controles button {
+    width: 44px;
+    height: 44px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #76152c;
+
+    color: white;
+
+    font-size: 29px;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,.25);
+}
+
+
+#numeroPagina {
+    color: #76152c;
+
+    font-weight: bold;
+
+    font-size: 14px;
+}
+/* =================================
+   VIRADA REALISTA DAS FOLHAS
+================================= */
+
+.pagina {
+
+    transform-style: preserve-3d;
+
+    backface-visibility: hidden;
+
+    transform-origin: left center;
+
+    transition:
+        transform 0.65s cubic-bezier(.2,.8,.2,1);
+
+    will-change: transform;
+
+    touch-action: pan-y;
+
+}
+
+
+/* Página enquanto está sendo arrastada */
+
+.pagina.virando {
+
+    transition: none !important;
+
+}
+
+
+/* Efeito de profundidade */
+
+.pagina::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 45px;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            to right,
+            rgba(0,0,0,0),
+            rgba(0,0,0,0.18)
+        );
+
+    opacity: var(--sombra-folha, 0);
+
+    transition: opacity 0.2s;
+
+}
+
+
+/* Fundo das páginas */
+
+.pagina {
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.25);
+
+}
+
+
+/* Pequeno efeito quando vira */
+
+.pagina.virando {
+
+    filter:
+        drop-shadow(
+            8px 4px 12px rgba(0,0,0,0.25)
+        );
+
+}

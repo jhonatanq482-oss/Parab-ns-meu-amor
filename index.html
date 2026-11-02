@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Para o Meu Amor ❤️</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    body {
+      background: #0f0508;
+      font-family: 'Georgia', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      color: #333;
+    }
+
+    /* CONTAINER DO ÁLBUM */
+    .album-container {
+      position: relative;
+      width: 90vw;
+      max-width: 380px;
+      height: 82vh;
+      max-height: 660px;
+      perspective: 1500px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+      border-radius: 12px;
+    }
+
+    /* CAPA */
+    .capa {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, #4a0e17 0%, #1a0307 100%);
+      border: 3px solid #d4af37;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      transform-origin: left;
+      transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+      box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.3);
+      text-align: center;
+      padding: 20px;
+    }
+
+    .capa.aberta {
+      transform: rotateY(-130deg);
+      pointer-events: none;
+    }
+
+    .capa-moldura {
+      border: 2px dashed #d4af37;
+      padding: 25px 15px;
+      border-radius: 8px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .coracao-pulsante {
+      font-size: 50px;
+      color: #e63946;
+      animation: pulsar 1.4s infinite ease-in-out;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+    }
+
+    @keyframes pulsar {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .capa h1 {
+      color: #f3e5ab;
+      font-size: 26px;
+      margin-bottom: 8px;
+      font-family: 'Cinzel', serif;
+    }
+
+    .capa p {
+      color: #d4af37;
+      font-size: 14px;
+      margin-bottom: 30px;
+      font-style: italic;
+    }
+
+    .btn-hold {
+      background: linear-gradient(135deg, #d4af37, #aa7c11);
+      color: #1a0307;
+      border: none;
+      padding: 14px 24px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: rgba(255, 255, 255, 0.4);
+      transition: width 0.1s linear;
+    }
+
+    /* PÁGINAS DO ÁLBUM */
+    .paginas-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fdfbf7;
+    }
+
+    .pagina {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #fdfbf7;
+      background-image: radial-gradient(#e2d9cc 1px, transparent 0);
+      background-size: 16px 16px;
+      padding: 25px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: center;
+      box-sizing: border-box;
+      border-radius: 12px;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.05);
+      border: 1px solid #e8e0d5;
+      display: none;
+    }
+
+    .pagina.ativa {
+      display: flex;
+      z-index: 10;
+    }
+
+    .pagina.subjacente {
+      display: flex;
+      z-index: 5;
+    }
+
+    /* MOLDURA DA FOTO */
+    .foto-moldura {
+      width: 130px;
+      height: 130px;
+      border: 3px solid #d4af37;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      background: #eee;
+      flex-shrink: 0;
+    }
+
+    .foto-moldura img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .pagina h2 {
+      color: #8b0000;
+      font-size: 19px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #d4af37;
+      padding-bottom: 5px;
+      width: 100%;
+    }
+
+    .pagina p {
+      color: #4a4a4a;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* OVERLAY DE DOBRA REALISTA (FOLHA VIRTUAL) */
+    .folha-dobra {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 50;
+      pointer-events: none;
+      display: none;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .folha-dobra .camada-base {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #fdfbf7;
+    }
+
+    .folha-dobra .sombra-dobra {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 40%, rgba(255,255,255,0.4) 50%, rgba(0,0,0,0.4) 65%, rgba(0,0,0,0) 100%);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ELEMENTOS DE ÁUDIO -->
+  <audio id="somPapel" src="papel.mp3" preload="auto"></audio>
+  <audio id="musicaFundo" src="musica.mp3" loop preload="auto"></audio>
+
+  <div class="album-container" id="albumContainer">
+    
+    <!-- CAPA DO ÁLBUM -->
+    <div class="capa" id="capa">
+      <div class="capa-moldura">
+        <div class="coracao-pulsante">❤️</div>
+        <h1>Para o meu amor</h1>
+        <p>Uma lembrança especial</p>
+        <button class="btn-hold" id="btnHold">
+          <span class="progress-bar" id="progressBar"></span>
+          APERTE E SEGURE
+        </button>
+      </div>
+    </div>
+
+    <!-- PÁGINAS DO ÁLBUM COM FOTOS -->
+    <div class="paginas-wrapper">
+      
+      <!-- Página 1 -->
+      <div class="pagina ativa" data-pagina="1">
+        <div class="foto-moldura">
+          <img src="foto1.jpg" alt="Foto 1">
+        </div>
+        <h2>Hoje é um dia especial ❤️</h2>
+        <p>Hoje não é apenas mais um dia. É o dia de comemorar a vida de uma pessoa que se tornou muito importante para mim.</p>
+      </div>
+
+      <!-- Página 2 -->
+      <div class="pagina" data-pagina="2">
+        <div class="foto-moldura">
+          <img src="foto2.jpg" alt="Foto 2">
+        </div>
+        <h2>Parabéns, meu amor! ❤️</h2>
+        <p>É um imenso prazer e uma enorme felicidade poder fazer parte dessa data tão especial.</p>
+      </div>
+
+      <!-- Página 3 -->
+      <div class="pagina" data-pagina="3">
+        <div class="foto-moldura">
+          <img src="foto3.jpg" alt="Foto 3">
+        </div>
+        <h2>Quero que você saiba...</h2>
+        <p>O quanto eu te amo e o quanto você é amada. Você é uma pessoa muito especial para mim e eu sou muito feliz por ter você na minha vida. ❤️</p>
+      </div>
+
+      <!-- Página 4 -->
+      <div class="pagina" data-pagina="4">
+        <div class="foto-moldura">
+          <img src="foto4.jpg" alt="Foto 4">
+        </div>
+        <h2>Que Deus te abençoe 🙏❤️</h2>
+        <p>Que Deus cuide de você em cada detalhe, proteja todos os seus caminhos e esteja sempre presente trazendo paz, amor e sabedoria para a sua vida.</p>
+      </div>
+
+      <!-- Página 5 -->
+      <div class="pagina" data-pagina="5">
+        <div class="foto-moldura">
+          <img src="foto5.jpg" alt="Foto 5">
+        </div>
+        <h2>Que seus sonhos se realizem ✨</h2>
+        <p>Desejo do fundo do meu coração que você consiga alcançar todos os seus objetivos e realizar cada um dos seus maiores sonhos.</p>
+      </div>
+
+      <!-- Página 6 -->
+      <div class="pagina" data-pagina="6">
+        <div class="foto-moldura">
+          <img src="foto6.jpg" alt="Foto 6">
+        </div>
+        <h2>Quero estar ao seu lado ❤️</h2>
+        <p>Quero continuar ao seu lado para celebrar os próximos aniversários, vibrar com suas futuras conquistas e construir momentos inesquecíveis.</p>
+      </div>
+
+      <!-- Página 7 -->
+      <div class="pagina" data-pagina="7">
+        <div class="foto-moldura">
+          <img src="foto7.jpg" alt="Foto 7">
+        </div>
+        <h2>Obrigado por existir ❤️</h2>
+        <p>Você é uma pessoa incrível, dona de um sorriso lindo e de uma luz impecável. Obrigado por transformar meus dias em dias melhores.</p>
+      </div>
+
+      <!-- Página 8 -->
+      <div class="pagina" data-pagina="8">
+        <div class="foto-moldura">
+          <img src="foto8.jpg" alt="Foto 8">
+        </div>
+        <h2>Eu te amo muito! ❤️</h2>
+        <p>Que o seu dia seja maravilhoso e cheio de alegrias. Você merece todo o amor do mundo.<br><br><strong>Happy Birthday! ❤️</strong></p>
+      </div>
+
+      <!-- FOLHA VIRTUAL PARA ANIMAÇÃO DE DOBRA REALISTA -->
+      <div class="folha-dobra" id="folhaDobra">
+        <div class="camada-base" id="folhaConteudo"></div>
+        <div class="sombra-dobra" id="sombraDobra"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // --- ELEMENTOS DE ÁUDIO ---
+    const somPapel = document.getElementById('somPapel');
+    const musicaFundo = document.getElementById('musicaFundo');
+    musicaFundo.volume = 0.4; // Volume ajustado para música de fundo suave
+
+    function tocarAudioPapel() {
+      if (somPapel) {
+        somPapel.currentTime = 0; 
+        somPapel.play().catch(e => {});
+      }
+    }
+
+    // --- GERENCIAMENTO DA CAPA ---
+    const btnHold = document.getElementById('btnHold');
+    const progressBar = document.getElementById('progressBar');
+    const capa = document.getElementById('capa');
+    let holdTimer = null;
+    let holdStartTime = 0;
+    const holdDuration = 2000; // 2 segundos
+
+    function startHold(e) {
+      e.preventDefault();
+      holdStartTime = Date.now();
+      progressBar.style.width = '0%';
+      
+      holdTimer = setInterval(() => {
+        const elapsed = Date.now() - holdStartTime;
+        const percent = Math.min((elapsed / holdDuration) * 100, 100);
+        progressBar.style.width = percent + '%';
+
+        if (elapsed >= holdDuration) {
+          clearInterval(holdTimer);
+          abrirCapa();
+        }
+      }, 20);
+    }
+
+    function cancelHold() {
+      if (holdTimer) clearInterval(holdTimer);
+      progressBar.style.width = '0%';
+    }
+
+    function abrirCapa() {
+      capa.classList.add('aberta');
+      tocarAudioPapel();
+      musicaFundo.play().catch(e => {});
+    }
+
+    btnHold.addEventListener('pointerdown', startHold);
+    btnHold.addEventListener('pointerup', cancelHold);
+    btnHold.addEventListener('pointerleave', cancelHold);
+
+    // --- SISTEMA DE DOBRA E NAVEGAÇÃO DE PÁGINAS ---
+    const paginas = Array.from(document.querySelectorAll('.pagina'));
+    const albumContainer = document.getElementById('albumContainer');
+    const folhaDobra = document.getElementById('folhaDobra');
+    const folhaConteudo = document.getElementById('folhaConteudo');
+    const sombraDobra = document.getElementById('sombraDobra');
+
+    let paginaAtualIndex = 0;
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
+    let direcao = null; 
+    let proximaPaginaIndex = -1;
+
+    albumContainer.addEventListener('pointerdown', (e) => {
+      if (!capa.classList.contains('aberta')) return;
+      isDragging = true;
+      startX = e.clientX;
+      currentX = e.clientX;
+      direcao = null;
+    });
+
+    albumContainer.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+
+      currentX = e.clientX;
+      const diffX = currentX - startX;
+      const containerWidth = albumContainer.offsetWidth;
+
+      if (!direcao && Math.abs(diffX) > 10) {
+        if (diffX < 0 && paginaAtualIndex < paginas.length - 1) {
+          direcao = 'avancar';
+          proximaPaginaIndex = paginaAtualIndex + 1;
+          iniciarDobra();
+        } else if (diffX > 0 && paginaAtualIndex > 0) {
+          direcao = 'voltar';
+          proximaPaginaIndex = paginaAtualIndex - 1;
+          iniciarDobra();
+        }
+      }
+
+      if (direcao) {
+        let progresso = Math.abs(diffX) / containerWidth;
+        progresso = Math.min(Math.max(progresso, 0), 1);
+        atualizarDobra(progresso);
+      }
+    });
+
+    albumContainer.addEventListener('pointerup', finalizarArrasto);
+    albumContainer.addEventListener('pointercancel', finalizarArrasto);
+
+    function iniciarDobra() {
+      folhaDobra.style.display = 'block';
+      tocarAudioPapel(); 
+
+      if (direcao === 'avancar') {
+        folhaConteudo.innerHTML = paginas[paginaAtualIndex].innerHTML;
+        paginas[proximaPaginaIndex].classList.add('subjacente');
+      } else if (direcao === 'voltar') {
+        folhaConteudo.innerHTML = paginas[proximaPaginaIndex].innerHTML;
+        paginas[paginaAtualIndex].classList.add('subjacente');
+      }
+    }
+
+    function atualizarDobra(progresso) {
+      const p = progresso * 100;
+
+      if (direcao === 'avancar') {
+        const clipRight = 100 - p;
+        const foldCurve = Math.sin(progresso * Math.PI) * 12;
+        
+        folhaDobra.style.clipPath = `polygon(0% 0%, ${clipRight}% 0%, ${Math.max(0, clipRight - foldCurve)}% 100%, 0% 100%)`;
+        sombraDobra.style.background = `linear-gradient(to right, rgba(0,0,0,0) ${Math.max(0, clipRight - 20)}%, rgba(0,0,0,0.3) ${clipRight}%, rgba(255,255,255,0.5) ${Math.min(100, clipRight + 5)}%, rgba(0,0,0,0) 100%)`;
+      } else if (direcao === 'voltar') {
+        const clipLeft = p;
+        const foldCurve = Math.sin(progresso * Math.PI) * 12;
+
+        folhaDobra.style.clipPath = `polygon(0% 0%, ${clipLeft}% 0%, ${Math.min(100, clipLeft + foldCurve)}% 100%, 0% 100%)`;
+        sombraDobra.style.background = `linear-gradient(to left, rgba(0,0,0,0) ${Math.max(0, clipLeft - 20)}%, rgba(0,0,0,0.3) ${clipLeft}%, rgba(255,255,255,0.5) ${Math.min(100, clipLeft + 5)}%, rgba(0,0,0,0) 100%)`;
+      }
+    }
+
+    function finalizarArrasto() {
+      if (!isDragging) return;
+      isDragging = false;
+
+      if (!direcao) return;
+
+      const diffX = currentX - startX;
+      const containerWidth = albumContainer.offsetWidth;
+      const progresso = Math.abs(diffX) / containerWidth;
+
+      if (progresso >= 0.25) {
+        animarConclusao(progresso, 1, () => {
+          paginas[paginaAtualIndex].classList.remove('ativa', 'subjacente');
+          paginaAtualIndex = proximaPaginaIndex;
+          paginas[paginaAtualIndex].classList.add('ativa');
+          paginas[paginaAtualIndex].classList.remove('subjacente');
+          
+          resetarFolhaDobra();
+        });
+      } else {
+        animarConclusao(progresso, 0, () => {
+          if (proximaPaginaIndex !== -1) {
+            paginas[proximaPaginaIndex].classList.remove('subjacente');
+          }
+          resetarFolhaDobra();
+        });
+      }
+    }
+
+    function animarConclusao(de, para, callback) {
+      let duracao = 250;
+      let inicio = null;
+
+      function step(timestamp) {
+        if (!inicio) inicio = timestamp;
+        let tempo = timestamp - inicio;
+        let fator = Math.min(tempo / duracao, 1);
+        let valorAtual = de + (para - de) * fator;
+
+        atualizarDobra(valorAtual);
+
+        if (fator < 1) {
+          requestAnimationFrame(step);
+        } else {
+          callback();
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    function resetarFolhaDobra() {
+      folhaDobra.style.display = 'none';
+      folhaDobra.style.clipPath = 'none';
+      direcao = null;
+      proximaPaginaIndex = -1;
+    }
+  </script>
+</body>
+</html>
